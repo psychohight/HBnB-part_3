@@ -2,12 +2,16 @@
 Places controller module
 """
 
-from flask import abort, request, Blueprint
+from flask import abort, request, Blueprint, render_template
 from solutions.solution.src.models.place import Place
 from solutions.solution.src.models.review import Review
 
 
 places_bp = Blueprint('places', __name__)
+
+@places_bp.route('/')
+def home_places():
+    return render_template('index.html')
 
 @places_bp.route('/', methods=['POST'])
 def create_place():
