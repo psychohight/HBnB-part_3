@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const placesList = document.getElementById('places-list');
     const countryFilter = document.getElementById('country-filter');
 
+    // Store places globally so they can be accessed by filter_by_country.js
+    window.allPlaces = [];
+
     // Function to get a cookie by name
     function getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -32,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const places = await response.json();
+            window.allPlaces = places; // Store the fetched places globally
             renderPlaces(places);
 
         } catch (error) {
@@ -76,4 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Fetch places if the user is logged in
     fetchPlaces();
+
+    // Expose the renderPlaces function globally
+    window.renderPlaces = renderPlaces;
 });

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const countryDropdown = document.getElementById('country-filter');
             data.forEach(country => {
                 const option = document.createElement('option');
-                option.value = country.code;
+                option.value = country.name;
                 option.textContent = country.name;
                 countryDropdown.appendChild(option);
             });

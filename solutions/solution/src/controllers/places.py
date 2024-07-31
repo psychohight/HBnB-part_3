@@ -5,6 +5,7 @@ from flask_jwt_extended import jwt_required
 from flask import abort, request, Blueprint, render_template
 from solutions.solution.src.models.place import Place
 from solutions.solution.src.models.review import Review
+from solutions.solution.src.models.country import Country
 
 
 places_bp = Blueprint('places', __name__)
@@ -83,3 +84,15 @@ def get_reviews_by_place(place_id: str):
     return [
         review.to_dict() for review in reviews if review.place_id == place_id
     ], 200
+
+@places_bp.route('/<code>', methods=['GET'])
+def get_country_places(code: str):
+    """Returns all places for a specific country"""
+    country: Country | None = Country.get_by_code(code)
+    if not country:
+        abort(404, f"Country with ID {code} not found")
+    places: list[Place] = Place.get_all()
+    country_places = [
+        place.to_dict() for place in places if place.country_code == country.code
+    ]
+    return country_places

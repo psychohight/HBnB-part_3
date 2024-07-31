@@ -22,6 +22,7 @@ class Place(db.Model):
     host_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    country_name = db.Column(db.String(128), nullable=False)  # New column
 
     amenities = relationship("Amenity", secondary='place_amenity', back_populates="places")
     place_reviews = relationship("Review", back_populates="place", lazy=True, cascade="all, delete-orphan")
@@ -48,6 +49,7 @@ class Place(db.Model):
             "host_id": self.host_id,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+            "country_name": self.country_name  # Include country_name in the dictionary representation
         }
 
     @staticmethod
@@ -73,6 +75,7 @@ class Place(db.Model):
             longitude=data.get("longitude", None),
             city_id=data["city_id"],
             host_id=data["host_id"],
+            country_name=data["country_name"],  # Add country_name
             created_at=datetime.utcnow(),  # Manually set created_at
             updated_at=datetime.utcnow()  # Manually set updated_at
         )
@@ -108,6 +111,8 @@ class Place(db.Model):
             place.city_id = data["city_id"]
         if "host_id" in data:
             place.host_id = data["host_id"]
+        if "country_name" in data:  # Add country_name
+            place.country_name = data["country_name"]
         place.updated_at = datetime.utcnow()  # Update updated_at manually
         repo.update(place)
         return place
