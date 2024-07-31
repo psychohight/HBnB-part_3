@@ -1,8 +1,8 @@
 """
 Places controller module
 """
-
-from flask import abort, request, Blueprint, render_template, redirect, url_for
+from flask_jwt_extended import jwt_required
+from flask import abort, request, Blueprint, render_template
 from solutions.solution.src.models.place import Place
 from solutions.solution.src.models.review import Review
 
@@ -24,14 +24,11 @@ def create_place():
 
 
 @places_bp.route('/', methods=['GET'])
+@jwt_required()
 def get_places():
     """Returns all places"""
     places: list[Place] = Place.get_all()
     return [place.to_dict() for place in places], 200
-
-@places_bp.route('/<place_id>')
-def get_place(place_id: str):
-    return render_template('place.html')
     
 
 @places_bp.route('/<place_id>', methods=['GET'])
@@ -62,9 +59,6 @@ def delete_place(place_id: str):
         abort(404, f"Place with ID {place_id} not found")
     return "", 204
 
-@places_bp.route('/<place_id>/reviews')
-def reviews_by_place(place_id: str):
-    return render_template('add_review.html')
 
 @places_bp.route('/<place_id>/reviews', methods=['POST'])
 def create_review(place_id: str):

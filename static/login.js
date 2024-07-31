@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('login-form');
-    
+
     loginForm.addEventListener('submit', async function (event) {
         event.preventDefault();
 
@@ -18,15 +18,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                alert(`Error: ${errorData.message}`);
+                alert(`Error: ${errorData.msg}`);
                 return;
             }
 
             const data = await response.json();
             const token = data.access_token;
 
-            // Store the token in localStorage or cookies
-            document.cookie = `jwt_token=${token}; path=/; secure; HttpOnly`;
+            // Store the token in a cookie
+            document.cookie = `jwt_token=${token}; path=/; secure; SameSite=Strict`;
 
             // Redirect to the home page
             window.location.href = '/';
@@ -37,4 +37,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
