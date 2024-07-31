@@ -2,16 +2,13 @@
 Places controller module
 """
 
-from flask import abort, request, Blueprint, render_template
+from flask import abort, request, Blueprint, render_template, redirect, url_for
 from solutions.solution.src.models.place import Place
 from solutions.solution.src.models.review import Review
 
 
 places_bp = Blueprint('places', __name__)
 
-@places_bp.route('/')
-def home_places():
-    return render_template('index.html')
 
 @places_bp.route('/', methods=['POST'])
 def create_place():
@@ -32,6 +29,10 @@ def get_places():
     places: list[Place] = Place.get_all()
     return [place.to_dict() for place in places], 200
 
+@places_bp.route('/<place_id>')
+def get_place(place_id: str):
+    return render_template('place.html')
+    
 
 @places_bp.route('/<place_id>', methods=['GET'])
 def get_place_by_id(place_id: str):
@@ -60,6 +61,10 @@ def delete_place(place_id: str):
     if not Place.delete(place_id):
         abort(404, f"Place with ID {place_id} not found")
     return "", 204
+
+@places_bp.route('/<place_id>/reviews')
+def reviews_by_place(place_id: str):
+    return render_template('add_review.html')
 
 @places_bp.route('/<place_id>/reviews', methods=['POST'])
 def create_review(place_id: str):

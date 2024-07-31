@@ -458,7 +458,7 @@ main {
 
 .nav .nav-item {
     text-decoration: none;
-    margin-left: 2rem; /* Adjust spacing as needed */
+    margin-left: 2rem;
 }
 
 .nav .nav-link, 

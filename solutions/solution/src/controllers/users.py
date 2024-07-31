@@ -1,6 +1,6 @@
 # solutions/solution/src/controllers/users.py
 
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, render_template
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from solutions.solution.src.models.user import User
 from solutions.solution.src.models.review import Review
@@ -8,8 +8,8 @@ from solutions.solution.src.models.place import Place
 
 users_bp = Blueprint('users', __name__)
 
+
 @users_bp.route('/', methods=['GET'])
-@jwt_required()
 def get_users():
     """Returns all users"""
     users = User.get_all()
@@ -32,7 +32,6 @@ def create_user():
 
 
 @users_bp.route('/<user_id>', methods=['GET'])
-@jwt_required()
 def get_user_by_id(user_id):
     """Returns a user by ID"""
     user = User.get(user_id)
@@ -42,7 +41,6 @@ def get_user_by_id(user_id):
 
 
 @users_bp.route('/<user_id>', methods=['PUT'])
-@jwt_required()
 def update_user(user_id):
     """Updates a user by ID"""
     data = request.get_json()
@@ -56,7 +54,6 @@ def update_user(user_id):
 
 
 @users_bp.route('/<user_id>', methods=['DELETE'])
-@jwt_required()
 def delete_user(user_id):
     """Deletes a user by ID"""
     if not User.delete(user_id):
@@ -65,7 +62,6 @@ def delete_user(user_id):
 
 
 @users_bp.route('/<user_id>/places', methods=['GET'])
-@jwt_required()
 def get_places_from_user(user_id):
     """Returns all places from a specific user"""
     places = Place.get_all()
@@ -73,7 +69,6 @@ def get_places_from_user(user_id):
 
 
 @users_bp.route('/<user_id>/reviews', methods=['GET'])
-@jwt_required()
 def get_reviews_from_user(user_id: str):
     """Returns all reviews from a specific user"""
     reviews = Review.get_all()
@@ -81,7 +76,6 @@ def get_reviews_from_user(user_id: str):
 
 
 @users_bp.route('/admin_only', methods=['GET'])
-@jwt_required()
 def admin_only():
     user_id = get_jwt_identity()
     user = User.get(user_id)

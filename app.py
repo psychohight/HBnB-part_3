@@ -45,6 +45,7 @@ def create_app():
             db.create_all()
             print("DB tables created")
 
+    from solutions.solution.src.controllers.home import home_bp
     from solutions.solution.src.controllers.users import users_bp
     from solutions.solution.src.controllers.countries import country_bp
     from solutions.solution.src.controllers.cities import cities_bp
@@ -53,6 +54,7 @@ def create_app():
     from solutions.solution.src.controllers.reviews import reviews_bp
     from solutions.solution.src.controllers.authentication import auth_bp
 
+    app.register_blueprint(home_bp, url_prefix='')
     app.register_blueprint(users_bp, url_prefix='/users')
     app.register_blueprint(country_bp, url_prefix='/countries')
     app.register_blueprint(cities_bp, url_prefix='/cities')
