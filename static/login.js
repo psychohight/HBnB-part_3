@@ -1,39 +1,40 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
 
-    loginForm.addEventListener('submit', async function (event) {
-        event.preventDefault();
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Empêche le comportement par défaut de soumission du formulaire
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        try {
-            const response = await fetch('/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                alert(`Error: ${errorData.msg}`);
-                return;
+            try {
+                const response = await loginUser(email, password);
+                if (response.ok) {
+                    const data = await response.json();
+                    // Stocker le token JWT dans un cookie
+                    document.cookie = `token=${data.access_token}; path=/`;
+                    // Rediriger vers la page principale
+                    window.location.href = 'index.html';
+                } else {
+                    errorMessage.style.display = 'block'; // Afficher le message d'erreur
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorMessage.style.display = 'block';
             }
-
-            const data = await response.json();
-            const token = data.access_token;
-
-            // Store the token in a cookie
-            document.cookie = `jwt_token=${token}; path=/; secure; SameSite=Strict`;
-
-            // Redirect to the home page
-            window.location.href = '/';
-
-        } catch (error) {
-            console.error('Error logging in:', error);
-            alert('An error occurred. Please try again.');
-        }
-    });
+        });
+    }
 });
+
+async function loginUser(email, password) {
+    const API_URL = 'http://localhost:5500/templates/login';
+    const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    });
+    return response;
+}

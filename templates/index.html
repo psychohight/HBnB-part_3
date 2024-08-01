@@ -10,55 +10,65 @@
 <body>
     <header class="header" data-section-theme="light">
         <div class="container">
-          <div class="logo">
-            <a href="">
-              <img src="../static/images/logo.png" alt="hbnb logo" width="160" height="40">
-            </a>
-          </div>
-          <nav class="navbar-menu">
-            <ul class="nav">
-              <li class="nav-item">
-                <a href="/" class="nav-link active">Index</a>
-              </li>
-              <li class="nav-item">
-                <a href="/place" class="nav-link">Place</a>
-              </li>
-              <li class="nav-item">
-                <a href="/add_review" class="nav-link">Add_review</a>
-              </li>
-              <li class="nav-item">
-                <a href="/login" class="nav-link">Login</a>
-              </li>
-            </ul>
-          </nav>
+            <div class="logo">
+                <a href="/">
+                    <img src="../static/images/logo.png" alt="HBnB Logo" width="160" height="40">
+                </a>
+            </div>
+            <nav class="navbar-menu">
+                <ul class="nav">
+                    <li class="nav-item"><a href="/" class="nav-link active">Index</a></li>
+                    <li class="nav-item"><a href="/place" class="nav-link">Place</a></li>
+                    <li class="nav-item"><a href="/add_review" class="nav-link">Add Review</a></li>
+                    <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
     <main>
         <section id="Places" class="section">
             <div class="container">
                 <header class="section-header">
-                    <h2 class="section-title">Available places</h2>
+                    <h2 class="section-title">Available Places</h2>
                 </header>
                 <section id="filter">
                     <label for="country-filter">Filter by Country:</label>
                     <select id="country-filter">
-                      <option value="">Select a country</option>
                         <!-- Options will be populated dynamically -->
                     </select>
                 </section>
                 <section id="places-list">
-                    <!-- Place cards will be dynamically populated here -->
+                    <div class="place-card">
+                        <img src="../static/images/beach-house-large.jpg" alt="Beautiful Beach House" class="place-image">
+                        <h3>Beautiful Beach House</h3>
+                        <p>Price per night: $150</p>
+                        <p>Location: Los Angeles, United States</p>
+                        <button class="details-button">View Details</button>
+                    </div>
+                    <div class="place-card">
+                        <img src="../static/images/cozy-cabin.jpg" alt="Cozy Cabin" class="place-image">
+                        <h3>Cozy Cabin</h3>
+                        <p>Price per night: $100</p>
+                        <p>Location: Toronto, Canada</p>
+                        <button class="details-button">View Details</button>
+                    </div>
+                    <div class="place-card">
+                        <img src="../static/images/modern-apartment.jpg" alt="Modern Apartment" class="place-image">
+                        <h3>Modern Apartment</h3>
+                        <p>Price per night: $200</p>
+                        <p>Location: New York, United States</p>
+                        <button class="details-button">View Details</button>
+                    </div>
                 </section>
             </div>
         </section>
     </main>
     <footer class="footer" data-section-theme="light">
         <div class="container">
-          <p>&copy; 2024 HBnB. All rights reserved.</p>
+            <p>&copy; 2024 HBnB. All rights reserved.</p>
         </div>
     </footer>
-    <script src="../static/get_all_places.js"></script>
-    <script src="../static/populate_dropdown_countries.js"></script>
-    <script src="../static/filter_by_country.js"></script>
+    <script src="../static/scripts.js"></script>
 </body>
 </html>
+
