@@ -2,17 +2,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const placesList = document.getElementById('places-list');
     const countryFilter = document.getElementById('country-filter');
 
-    // Store places globally so they can be accessed by filter_by_country.js
+    // Stocker les lieux globalement pour un accès par filter_by_country.js
     window.allPlaces = [];
 
-    // Function to get a cookie by name
+    // Fonction pour obtenir un cookie par nom
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    // Function to fetch places
+    // Fonction pour récupérer les lieux
     async function fetchPlaces() {
         const token = getCookie('jwt_token');
 
@@ -30,12 +30,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (!response.ok) {
-                console.error('Failed to fetch places');
+                console.error('Failed to fetch places:', response.status, response.statusText);
                 return;
             }
 
             const places = await response.json();
-            window.allPlaces = places; // Store the fetched places globally
+            window.allPlaces = places; // Stocker les lieux récupérés globalement
             renderPlaces(places);
 
         } catch (error) {
@@ -43,15 +43,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Function to render places
+    // Fonction pour afficher les lieux
     function renderPlaces(places) {
-        placesList.innerHTML = '';
+        placesList.innerHTML = ''; // Vider la liste des lieux
+
         places.forEach(place => {
             const placeCard = document.createElement('div');
             placeCard.classList.add('place-card');
 
             const placeImage = document.createElement('img');
-            placeImage.src = `../static/images/beach-house.jpeg`;
+            // Assurez-vous que l'API fournit l'URL de l'image correcte
+            placeImage.src = `../static/images/${place.image}`; // Remplacer par place.image_url si disponible
             placeImage.alt = place.name;
             placeImage.classList.add('place-image');
 
@@ -59,14 +61,17 @@ document.addEventListener('DOMContentLoaded', function () {
             placeTitle.textContent = place.name;
 
             const placePrice = document.createElement('p');
-            placePrice.textContent = `Price per night: ${place.price_by_night}`;
+            placePrice.textContent = `Price per night: $${place.price_by_night}`;
 
             const placeLocation = document.createElement('p');
-            placeLocation.textContent = `Location: ${place.city_id}`;
+            placeLocation.textContent = `Location: ${place.city_id}`; // Remplacez par place.city_name si disponible
 
             const detailsButton = document.createElement('button');
             detailsButton.textContent = 'View Details';
             detailsButton.classList.add('details-button');
+            detailsButton.onclick = () => {
+                window.location.href = `place.html?id=${place.id}`; // Naviguer vers les détails de l'endroit
+            };
 
             placeCard.appendChild(placeImage);
             placeCard.appendChild(placeTitle);
@@ -78,9 +83,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Fetch places if the user is logged in
+    // Récupérer les lieux si l'utilisateur est connecté
     fetchPlaces();
 
-    // Expose the renderPlaces function globally
+    // Exposer la fonction renderPlaces globalement
     window.renderPlaces = renderPlaces;
 });
+
